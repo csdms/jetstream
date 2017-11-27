@@ -1,0 +1,18 @@
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+PS1='[\u@\h: \W]$ '
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH PS1
+
+notebook_dir=$HOME/notebooks
+if [ -d $notebook_dir ]; then
+    rm -rf $notebook_dir;
+fi
+cp -R /opt/csdms/jupyter/* $HOME
