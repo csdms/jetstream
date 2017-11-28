@@ -24,9 +24,7 @@ configure_user () {
     echo "- configuring user"
     extra_dirs="new.config Desktop"
     for dir in $extra_dirs; do
-	if [ -d /home/$1/$dir ]; then
-	    sudo rmdir /home/$1/$dir;
-	fi
+	sudo rm -rf /home/$1/$dir;
     done
     if [ -e "$scripts_dir/dot_bash_profile" ]; then
 	sudo cp $scripts_dir/dot_bash_profile /home/$1/.bash_profile;
