@@ -3,6 +3,9 @@
 # Create a sequence of users on a CentOS 7 system, configuring a home
 # directory for each. If a user of the same name exists, delete it.
 #
+user_prefix=csdms
+n_users=10
+scripts_dir=/opt/csdms/scripts
 
 remove_user () {
     echo "- removing existing user"
@@ -19,16 +22,19 @@ add_user () {
 
 configure_user () {
     echo "- configuring user"
-    sudo rmdir /home/$1/new.config
-    if [ -e "/opt/csdms/scripts/dot_bash_profile" ]; then
-	sudo cp /opt/csdms/scripts/dot_bash_profile /home/$1/.bash_profile;
+    extra_dirs="new.config Desktop"
+    for dir in $extra_dirs; do
+	if [ -d /home/$1/$dir ]; then
+	    sudo rmdir /home/$1/$dir;
+	fi
+    done
+    if [ -e "$scripts_dir/dot_bash_profile" ]; then
+	sudo cp $scripts_dir/dot_bash_profile /home/$1/.bash_profile;
     else
 	echo "Failed to copy .bash_profile"
     fi
 }
 
-user_prefix=csdms
-n_users=10
 for i in $(seq 1 $n_users); do
     if (($i < 10)); then
 	user_name="$user_prefix"0$i;
