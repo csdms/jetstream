@@ -6,9 +6,9 @@ that the user copies to their local browser.
 Anyone can access this Jupyter Notebook
 as long as the Jetstream VM instance is running.
 
-We can set up a series of student logins
+We can set up a series of generic users
 (e.g., *csdmsXX*)
-to serve Notebooks for CSDMS and Landlab demos.
+to serve Notebooks for CSDMS and Landlab demos or for a class.
 
 For a user, the process would be:
 
@@ -40,14 +40,37 @@ Calling
 
 starts Jupyter Notebook without sudo.
 
+This installs Anaconda in **/home/anaconda2**.
+We should make our own Anaconda install elsewhere
+and make sure `ezj` can find it.
 
-## Student logins
+
+## Generic users
 
 Make users *csdms01*, *csdms02*, etc.
+
 Because the **/home** directory is wiped whenever
 an instance is created from an image,
-use a script to generate these users.
-Store the script in **/opt/csdms/scripts**.
+use the script [make_generic_users.sh](./make_generic_users.sh)
+to automatically generate these users.
+Put the script in **/etc/profile.d** so that it's run
+when the instance is started.
+
+From the Jetstream docs,
+allow these users to `ssh` into the instance.
+This only needs to be done once.
+Edit **/etc/ssh/sshd_config**, adding the line:
+
+    PasswordAuthentication yes
+
+(Note: this is already set as the default)
+then restart sshd:
+
+    sudo systemctl restart sshd
+
+Jetstream also has the notion of a
+[deployment script](https://portal.xsede.org/jetstream#vmcust:request-bootscripts),
+but I think it's not needed for this case.
 
 
 ## CSDMS and Landlab Jupyter Notebooks
@@ -61,37 +84,6 @@ populate this directory with CSDMS/Landlab Jupyter Notebooks
 using a login script (add to or call from **~/.bash_profile**).
 Create a README in `$HOME`
 that directs users to the notebooks in **~/notebooks**.
-
-
-## Script to create users
-
-This is psuedocode.
-
-```bash
-user_suffix="01 02 03 04 05"
-for xx in $user_suffix; do
-    sudo adduser csdms$xx
-    echo "csdms*landlab" | sudo passwd csdms$xx --stdin
-    sudo usermod -a -G users csdms$xx
-    sudo rmdir /home/csdms$xx/new.config
-    # Add modified .bash_profile to $HOME
-done
-```
-
-From the Jetstream docs,
-allow these users to ssh into the instance.
-This only needs to be done once.
-Edit **/etc/ssh/sshd_config**, adding the line:
-
-    PasswordAuthentication yes
-
-(Note: this is already set as the default)
-and restart sshd:
-
-    sudo systemctl restart sshd
-
-
-## Script to load notebooks
 
 Add these statements to the user's **.bash_profile**.
 
