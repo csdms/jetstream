@@ -4,13 +4,14 @@ XSEDE's `ezj` script allows a user to run a Jupyter Notebook instance.
 It provides an URL with a token
 that the user copies to their local browser.
 Anyone can access this Jupyter Notebook
-as long as the Jetstream VM instance is running.
+as long as they have a login
+and the Jetstream VM instance is running.
 
 We can set up a series of generic users
 (e.g., *csdmsXX*)
-to serve Notebooks for CSDMS and Landlab demos or for a class.
+to serve Notebooks for CSDMS (including Landlab) demos or for a class.
 
-For a user, the process would be:
+For a user, the process is:
 
 1. From a terminal, login to the Jetstream instance with a *csdmsXX*
    username and password; e.g.,
@@ -24,25 +25,25 @@ For a user, the process would be:
 I've set up an *m1.tiny* instance to prototype.
 
 
-## The ezj script
+## Set up and run Jupyter Notebook
 
-The Jupyter Notebook script provided by XSEDE is `ezj`.
-It needs to be run to get the externally accessible Notebook URL
-and token.
-(Is there an API call for this?)
+Install Anaconda2 (in this case, v4.3.1) in **/opt/anaconda2**.
 
-Find `ezj` in **/etc/profile.d/cyverse20-ezj-setup.sh**.
-It's interesting to see what it does.
+The XSEDE Jetstream `ezj` setup script,
+**cyverse20-ezj-setup.sh**,
+is found in **/etc/profile.d**,
+where it's run on login for each user.
 
-Calling
+Call `ezj` with
 
-    ezj -q
+    ezj -q -p /opt
 
-starts Jupyter Notebook without sudo.
+where `-q` is the "quick" flag,
+which bypasses updating the Anaconda distro,
+and `-p` gives the location of the Anaconda install directory.
 
-This installs Anaconda in **/home/anaconda2**.
-We should make our own Anaconda install elsewhere
-and make sure `ezj` can find it.
+Call `ezj` in this way from the user's **.bash_profile**
+to start Jupyter Notebook when a user logs in.
 
 
 ## Generic users
