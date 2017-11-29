@@ -53,9 +53,17 @@ Make users *csdms01*, *csdms02*, etc.
 Because the **/home** directory is wiped whenever
 an instance is created from an image,
 use the script [make_generic_users.sh](./make_generic_users.sh)
-to automatically generate these users.
-Put the script in **/etc/profile.d** so that it's run
-when the instance is started.
+to generate these users.
+
+I'd like to run this script automatically at startup.
+In CentOS 7, I can either
+
+1. Create a service and place it in **/usr/lib/systemd/system**, or
+1. Use the old way of referencing the script from **/etc/rc.local**.
+
+Jetstream also has the notion of a
+[deployment script](https://portal.xsede.org/jetstream#vmcust:request-bootscripts),
+but I'm not sure this is what's needed here.
 
 From the Jetstream docs,
 allow these users to `ssh` into the instance.
@@ -68,10 +76,6 @@ Edit **/etc/ssh/sshd_config**, adding the line:
 then restart sshd:
 
     sudo systemctl restart sshd
-
-Jetstream also has the notion of a
-[deployment script](https://portal.xsede.org/jetstream#vmcust:request-bootscripts),
-but I think it's not needed for this case.
 
 
 ## CSDMS and Landlab Jupyter Notebooks
