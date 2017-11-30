@@ -55,15 +55,20 @@ an instance is created from an image,
 use the script [make_generic_users.sh](./make_generic_users.sh)
 to generate these users.
 
-I'd like to run this script automatically at startup.
+I'd like to run this script automatically when the instance is booted.
 In CentOS 7, I can either
 
-1. Create a service and place it in **/usr/lib/systemd/system**, or
-1. Use the old way of referencing the script from **/etc/rc.local**.
+1. create a service and place it in **/usr/lib/systemd/system**, or
+1. use the deprecated way of referencing the script from
+**/etc/rc.d/rc.local** (symlinked to **/etc/rc.local**).
 
-Jetstream also has the notion of a
+I chose the old way since it's easier.
+The [rc.local](./rc.local) file I used is stored in this repo.
+This file must have `+x` permissions.
+
+Note that Jetstream also has the notion of a
 [deployment script](https://portal.xsede.org/jetstream#vmcust:request-bootscripts),
-but I'm not sure this is what's needed here.
+but I'm not sure it's what's needed here.
 
 From the Jetstream docs,
 allow these users to `ssh` into the instance.
