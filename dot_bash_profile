@@ -11,8 +11,12 @@ PATH=$PATH:$HOME/.local/bin:$HOME/bin
 
 export PATH PS1
 
+# Add Jupyter Notebooks
 notebook_dir=$HOME/notebooks
 if [ -d $notebook_dir ]; then
     rm -rf $notebook_dir;
 fi
 cp -R /opt/csdms/jupyter/* $HOME
+
+# Start Jupyter Notebook server
+ezj -q -p /opt
