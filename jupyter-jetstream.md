@@ -18,32 +18,42 @@ For a user, the process is:
 
         $ ssh csdms01@149.165.169.186
 
+   or, if it would look nicer,
+
+        $ ssh csdms01@js-169-186.jetstream-cloud.org
+
 1. On login, the `ezj` script is automatically run. The user copies
    the resulting URL to their local browser, which starts a Jupyter
    Notebook session.
 
-I've set up an *m1.tiny* instance to prototype.
+I've set up an *m1.tiny* instance in the "mdpiper" project to prototype,
+and an *m1.small* instance in the "csdms" project to run.
 
 
-## Set up and run Jupyter Notebook
+## Install Anaconda Python
 
 Install Anaconda2 (in this case, v4.3.1) in **/opt/anaconda2**.
 
-The XSEDE Jetstream `ezj` setup script,
-**cyverse20-ezj-setup.sh**,
-is found in **/etc/profile.d**,
-where it's run on login for each user.
+    curl https://repo.continuum.io/archive/Anaconda2-4.3.1-Linux-x86_64.sh -o anaconda.sh
+    sudo bash anaconda.sh -b -p /opt/anaconda2
+    #PATH=/opt/anaconda2/bin:$PATH  # for me only
 
-Call `ezj` with
+Install PyMT and Landlab into the root environment.
 
-    ezj -q -p /opt
+	sudo $(which conda) install -c csdms-stack -c conda-forge babelizer pymt
+    sudo $(which conda) install -c landlab -c conda-forge landlab
 
-where `-q` is the "quick" flag,
-which bypasses updating the Anaconda distro,
-and `-p` gives the location of the Anaconda install directory.
+Test the Landlab install.
 
-Call `ezj` in this way from the user's **.bash_profile**
-to start Jupyter Notebook when a user logs in.
+    python -c 'import landlab; landlab.test()'
+
+Install components that can be used in PyMT.
+
+    sudo $(which conda) install -c csdms-stack csdms-pydeltarcm csdms-permamodel-frostnumber csdms-permamodel-ku
+    sudo $(which conda) install -c csdms-stack csdms-hydrotrend
+
+    sudo $(which conda) install -c csdms-stack csdms-child
+    sudo $(which conda) install -c csdms-stack csdms-sedflux-3d
 
 
 ## Generic users
@@ -54,6 +64,7 @@ Because the **/home** directory is wiped whenever
 an instance is created from an image,
 use the script [make_generic_users.sh](./make_generic_users.sh)
 to generate these users.
+Place this script in **/opt/csdms/scripts**.
 
 I'd like to run this script automatically when the instance is booted.
 In CentOS 7, I can either
@@ -88,14 +99,30 @@ then restart sshd:
 Install CSDMS and Landlab Jupyter Notebooks
 in **/opt/csdms/jupyter/notebooks**.
 
+    mkdir -p /opt/csdms/jupyter
+    cd ~/projects/jetstream
+	sudo cp -R README.ipynb notebooks /opt/csdms/jupyter
+
+Clone Landlab tutorials.
+
+    cd ~/projects
+    git clone https://github.com/landlab/tutorials.git
+
+Remove extraneous files and copy all tutorials
+to **/opt/csdms/jupyter/notebooks**.
+
+    cd tutorials
+	rm *.md *.sh *.py *.ipynb
+	cp -R * /opt/csdms/jupyter/notebooks
+
 Make the directory **~/notebooks** for each user.
 On login,
 populate this directory with CSDMS/Landlab Jupyter Notebooks
-using a login script (add to or call from **~/.bash_profile**).
+using code in **~/.bash_profile**.
 Create a README in `$HOME`
 that directs users to the notebooks in **~/notebooks**.
 
-Add these statements to the user's **.bash_profile**.
+Add these statements to the user's **.bash_profile**:
 
 ```bash
 notebook_dir=$HOME/notebooks
@@ -117,3 +144,22 @@ $ tree /opt/csdms/jupyter
 
 This is done in the sample [dot_bash_profile](./dot_bash_profile)
 in this repo.
+
+
+## Run Jupyter Notebook server
+
+The XSEDE Jetstream `ezj` setup script,
+**cyverse20-ezj-setup.sh**,
+is found in **/etc/profile.d**,
+where it's run on login for each user.
+
+Call `ezj` with
+
+    ezj -q -p /opt
+
+where `-q` is the "quick" flag,
+which bypasses updating the Anaconda distro,
+and `-p` gives the directory where Anaconda is installed.
+
+Call `ezj` in this way from the user's **.bash_profile**
+to start Jupyter Notebook when a user logs in.
