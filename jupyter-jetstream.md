@@ -40,7 +40,7 @@ Install Anaconda2 (in this case, v4.3.1) in **/opt/anaconda2**.
 
 Install PyMT and Landlab into the root environment.
 
-	sudo $(which conda) install -c csdms-stack -c conda-forge babelizer pymt
+    sudo $(which conda) install -c csdms-stack -c conda-forge babelizer pymt
     sudo $(which conda) install -c landlab -c conda-forge landlab
 
 Test the Landlab install.
@@ -51,9 +51,10 @@ Install components that can be used in PyMT.
 
     sudo $(which conda) install -c csdms-stack csdms-pydeltarcm csdms-permamodel-frostnumber csdms-permamodel-ku
     sudo $(which conda) install -c csdms-stack csdms-hydrotrend
-
     sudo $(which conda) install -c csdms-stack csdms-child
     sudo $(which conda) install -c csdms-stack csdms-sedflux-3d
+
+Test that each can be instantiated.
 
 
 ## Generic users
@@ -94,32 +95,12 @@ then restart sshd:
     sudo systemctl restart sshd
 
 
-## CSDMS and Landlab Jupyter Notebooks
+### Installing notebooks for users
 
-Install CSDMS and Landlab Jupyter Notebooks
-in **/opt/csdms/jupyter/notebooks**.
-
-    mkdir -p /opt/csdms/jupyter
-    cd ~/projects/jetstream
-	sudo cp -R README.ipynb notebooks /opt/csdms/jupyter
-
-Clone Landlab tutorials.
-
-    cd ~/projects
-    git clone https://github.com/landlab/tutorials.git
-
-Remove extraneous files and copy all tutorials
-to **/opt/csdms/jupyter/notebooks**.
-
-    cd tutorials
-	rm *.md *.sh *.py *.ipynb
-	cp -R * /opt/csdms/jupyter/notebooks
-
-Make the directory **~/notebooks** for each user.
-On login,
-populate this directory with CSDMS/Landlab Jupyter Notebooks
-using code in **~/.bash_profile**.
-Create a README in `$HOME`
+Each user will have a directory **~/notebooks**,
+that's populated with the CSDMS/Landlab Jupyter Notebooks
+on login using code in **~/.bash_profile**.
+Also create a README in `$HOME`
 that directs users to the notebooks in **~/notebooks**.
 
 Add these statements to the user's **.bash_profile**:
@@ -131,7 +112,9 @@ if [ -d $notebook_dir ]; then
 fi
 cp -R /opt/csdms/jupyter/* $HOME
 ```
+
 where
+
 ```
 $ tree /opt/csdms/jupyter
 /opt/csdms/jupyter/
@@ -143,7 +126,37 @@ $ tree /opt/csdms/jupyter
 ```
 
 This is done in the sample [dot_bash_profile](./dot_bash_profile)
-in this repo.
+in this repo
+and added to the **make_generic_users.sh** script.
+
+
+## CSDMS and Landlab Jupyter Notebooks
+
+Install CSDMS and Landlab Jupyter Notebooks
+in **/opt/csdms/jupyter/notebooks**.
+
+    mkdir -p /opt/csdms/jupyter
+    cd ~/projects/jetstream
+    sudo cp -R README.ipynb notebooks /opt/csdms/jupyter
+
+Clone Landlab tutorials.
+
+    cd ~/projects
+    git clone https://github.com/landlab/tutorials landlab-tutorials
+
+Remove extraneous files and copy all tutorials
+to **/opt/csdms/jupyter/notebooks**.
+
+    cd landlab-tutorials
+    rm *.md *.sh *.py *.ipynb
+    cp -R * /opt/csdms/jupyter/notebooks
+
+Clone the PyMT demo.
+
+    cd ~/projects
+    git clone https://github.com/mcflugen/pymt-demo.git
+
+and copy it to **/opt/csdms/jupyter/notebooks**.
 
 
 ## Run Jupyter Notebook server
