@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>CSDMS Demo Server</title>
+
+    <!-- Bootstrap -->
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="starter-template">
+
+	<h1>CSDMS Demo Server</h1>
+
+	<p>
+	  We've collected a set of
+	  <a href="http://jupyter.org/">Jupyter Notebooks</a> that
+	  demonstrate how to use the software tools developed at
+	  CSDMS.
+
+	  The Notebooks are hosted on NSF's
+	  <a href="https://www.xsede.org/">XSEDE</a>
+	  <a href="https://jetstream-cloud.org/">Jetstream</a>
+	  cloud computing service.
+
+	  To access the Notebooks, follow these steps:
+	</p>
+
+	<ol>
+	  <li>
+	    On your computer, open a terminal.
+	  </li>
+
+	  <li>
+	    In the terminal, use <code>ssh</code> to login to
+	    Jetstream with a <code>csdmsXX</code> username,
+	    where <code>XX</code> is in [01, 02, 03, ..., 25]:
+	  </li>
+
+	  <br><pre><code class=language-bash data-lang=bash><span class=gp>$ </span>ssh csdmsXX@js-104-142.jetstream-cloud.org</code></pre>
+
+	  <p>
+	    You'll be prompted for a password, which you can get from
+	    a CSDMS IF staff member (or
+	    email <a href="mailto:csdmssupport@colorado.edu">csdmssupport@colorado.edu</a>
+	    if a staff member isn't present).
+	  </p>
+
+	  <li>
+	    Once logged in to Jetstream, a Jupyter Notebook server
+	    automatically starts. When it completes, it will print a
+	    (long) URL. Copy/paste the URL into a web browser
+	    on your computer to start a Jupyter Notebook session.
+	  </li>
+
+	  <li>
+	    On the Jupyter Notebook start page, click on
+	    the <code>README.ipynb</code> file. It gives a listing and
+	    brief description of all Notebooks available on the
+	    server. Click on a link to access a Notebook.
+	  </li>
+
+	  <li>
+	    When finished, type <code>Ctrl-C</code> twice in the
+	    terminal to close the Jupyter Notebook server, then
+	    type <code>exit</code> to exit Jetstream.
+	  </li>
+
+	</ol>
+
+	<p>
+	  Any questions?
+	  Please email <a href="mailto:csdmssupport@colorado.edu">csdmssupport@colorado.edu</a>.
+	</p>
+
+      </div>
+    </div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
