@@ -1,16 +1,14 @@
 # wmt-jetstream
 
 An explanation of how to set up the executor for the **wmt-jetstream**
-instance.
-
-Advice:
-Always do a `--dry-run` before installing any package with `conda`.
+instance, installed in **/opt/wmt**.
 
 
 ## Install Python
 
 Install a local version of Python.
 
+	mkdir -p /opt/wmt && cd /opt/wmt
     curl https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -o miniconda.sh
     bash ./miniconda.sh -f -b -p $(pwd)/conda
     export PATH=$(pwd)/conda/bin:$PATH
