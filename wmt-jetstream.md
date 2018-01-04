@@ -1,7 +1,6 @@
 # wmt-jetstream
 
-An explanation of how to set up the executor for the **wmt-jetstream**
-instance, installed in **/opt/wmt**.
+An explanation of how to set up a WMT executor on Jetstream. 
 
 
 ## Install Python
@@ -14,31 +13,28 @@ Install a local version of Python.
     export PATH=$(pwd)/conda/bin:$PATH
     root=$(pwd)
 
-Install some Anaconda packages that will be used by the CSDMS toolchain.
+Install some packages that will be used by the CSDMS toolchain.
 
-    conda install ipython numpy scipy matplotlib netcdf4
+    conda install numpy scipy matplotlib netcdf4
 
 
 ## Install the CSDMS toolchain
 
 Using the *csdms-stack* conda channel (the Bakery)
-install `cca-bocca` and `boost-headers`.
+install `cca-bocca`.
 This should fetch and install
 several dependencies for the CSDMS toolchain,
 including `cca-babel`, `cca-spec-babel`, `ccaffeine`,
 `chasm`, and `libparsifal`.
 
-    conda install -c csdms-stack boost-headers cca-bocca
+    conda install -c csdms-stack cca-bocca
 
 Next, install PyMT.
 PyMT requires `esmpy`,
 which is currently only found in the *conda-forge* channel.
-Also,
-there's an issue with the latest `cfunits-python` build,
-so use an earlier version.
 
-    conda install -c conda-forge esmpy
-    conda install -c csdms-stack cfunits-python=1.1 pymt
+    conda install -c defaults -c conda-forge esmpy
+    conda install -c csdms-stack pymt
 
 Install the `babelizer`.
 
@@ -54,7 +50,7 @@ so I'm choosing to install it from source.
     cd wmt-exe
     python setup.py develop
 
-Edit line 176 of **launcher.py** to use the URL
+Edit line 176 and line 207 of **launcher.py** to use the URL
 https://csdms.colorado.edu/wmt/api-analyst.
 
 
@@ -81,7 +77,7 @@ Babelize all components.
     mkdir -p build && cd build
     bmi-babelize $root/opt/permamodel --prefix=$root/conda &>build.log &
 
-Test a component by starting an IPython session
+Test a component by starting a Python session
 in **$root/test**
 and executing the setup and IRF methods.
 ```python
@@ -107,7 +103,21 @@ Install the Hydrotrend component from the Bakery.
 
     conda install -c csdms-stack csdms-hydrotrend
 
-*Problem*:
-The `csdms-hydrotrend` package requires `bmi-babel`,
-which has been deprecated.
-I'll need to rebuild the package.
+Test the component by starting a Python session
+in **$root/test**
+and executing the setup and IRF methods.
+```python
+from pymt.components import Hydrotrend
+
+comp = Hydrotrend()
+comp.get_component_name()
+# args = comp.setup('.')
+# comp.initialize(*args)
+comp.setup('.')
+comp.initialize(None)
+comp.get_start_time()
+comp.get_end_time()
+comp.get_current_time()
+comp.update()
+comp.finalize()
+```
